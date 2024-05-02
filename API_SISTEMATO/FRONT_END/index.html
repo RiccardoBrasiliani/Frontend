@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabella Prodotti</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    button {
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+
+<table id="tabella-prodotti">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Marca</th>
+      <th>Prezzo</th>
+      <th>Azioni</th>
+    </tr>
+  </thead>
+  <tbody id="tbody-prodotti">
+    <!-- Le righe verranno aggiunte dinamicamente qui -->
+  </tbody>
+</table>
+
+<button onclick="mostraModaleCreaProdotto()" class="btn btn-success">Crea Nuovo Prodotto</button>
+
+<div class="modal fade" id="creaProdottoModal" tabindex="-1" role="dialog" aria-labelledby="creaProdottoModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="creaProdottoModalLabel">Crea Nuovo Prodotto</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <div class="form-group">
+                  <label for="nome">Nome:</label>
+                  <input type="text" class="form-control" id="nome">
+              </div>
+              <div class="form-group">
+                  <label for="marca">Marca:</label>
+                  <input type="text" class="form-control" id="marca">
+              </div>
+              <div class="form-group">
+                  <label for="prezzo">Prezzo:</label>
+                  <input type="text" class="form-control" id="prezzo">
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+              <button type="button" class="btn btn-primary" onclick="salvaNuovoProdotto()">Salva</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="modal" id="modificaModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Modifica Prodotto</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="formModifica">
+          <div class="form-group">
+            <label for="modifica-id">ID:</label>
+            <input type="text" class="form-control" id="modifica-id" name="modifica-id" readonly>
+          </div>
+          <div class="form-group">
+            <label for="modifica-nome">Nome:</label>
+            <input type="text" class="form-control" id="modifica-nome" name="modifica-nome">
+          </div>
+          <div class="form-group">
+            <label for="modifica-prezzo">Prezzo:</label>
+            <input type="text" class="form-control" id="modifica-prezzo" name="modifica-prezzo">
+          </div>
+          <div class="form-group">
+            <label for="modifica-marca">Marca:</label>
+            <input type="text" class="form-control" id="modifica-marca" name="modifica-marca">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="salvaModifiche()">Salva Modifiche</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="confermaEliminazioneModal" tabindex="-1" role="dialog" aria-labelledby="confermaEliminazioneModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="confermaEliminazioneModalLabel">Conferma Eliminazione Prodotto</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              Sei sicuro di voler eliminare questo prodotto?
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+              <button type="button" class="btn btn-danger" onclick="confermaEliminazione()">Elimina</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="modal fade" id="dettagliProdottoModal" tabindex="-1" role="dialog" aria-labelledby="dettagliProdottoModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="dettagliProdottoModalLabel">Dettagli del Prodotto</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <p><strong>Nome:</strong> <span id="dettagli-nome"></span></p>
+              <p><strong>Prezzo:</strong> <span id="dettagli-prezzo"></span></p>
+              <p><strong>Marca:</strong> <span id="dettagli-marca"></span></p>
+              <!-- Aggiungi altri dettagli del prodotto qui se necessario -->
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
